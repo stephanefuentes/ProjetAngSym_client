@@ -24,5 +24,31 @@ public findAll()
   );
 }
 
+  public find(id: number) {
+    return this.http.get<Customer>("http://localhost:8000/customers/" + id);
+  }
+
+
+  public create(customer: Customer) {
+    return this.http.post<Customer>(
+      "http://localhost:8000/customers",
+      customer
+    );
+  }
+
+  public update(customer: Customer) {
+    const updatedCustomer = {
+      id: customer.id,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      email: customer.email
+    };
+
+    return this.http.put<Customer>(
+      "http://localhost:8000/customers/" + customer.id,
+      updatedCustomer
+    );
+  }
+
 
 }

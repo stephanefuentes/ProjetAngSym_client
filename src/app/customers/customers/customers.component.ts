@@ -5,21 +5,30 @@ import { CustomersService } from '../customers.service';
 @Component({
   selector: 'app-customers',
   template: `
+  <div class="alert alert-secondary">
+   <h2 style="color:green;">Liste des customers </h2> 
+  </div>
+
+  <a routerLink="/customer/new" class="btn btn-success"> Nouveau Customer</a>
     <table class="table table-hover">
     <thead>
       <th>id</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Nom complet</th>
       <th>E mail</th>
-      <th></th>
+      <th>Factures ( nbr ) </th>
+       <th></th>
     </thead>
+    
     <tbody>
       <tr *ngFor="let customer of customers">
         <td>{{ customer.id }}</td>
-        <td>{{ customer.firstName }}</td>
-        <td>{{ customer.lastName }}</td>
+        <td> <a routerLink="/customers/{{ customer.id }}">
+                {{ customer.firstName }} {{ customer.lastName }}
+            </a>
+        </td>
         <td>{{ customer.email }}</td> 
-        <td></td>
+        <td><a class="badge badge-success">{{ customer.invoices.length }}</a></td>
+        <td><a class="btn btn-danger">Supprimer</a></td>
       </tr>
     </tbody>
     </table>

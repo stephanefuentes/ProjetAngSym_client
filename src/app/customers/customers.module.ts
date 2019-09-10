@@ -5,13 +5,19 @@ import { CustomerFormComponent } from './customer-form/customer-form.component';
 import { CustomerViewComponent } from './customer-view/customer-view.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+
+import { ReactiveFormsModule } from "@angular/forms";
+import { UiModule } from '../ui/ui.module';
+
+
 
 
 
 @NgModule({
   declarations: [CustomersComponent, CustomerFormComponent, CustomerViewComponent],
   imports: [
-    CommonModule, HttpClientModule
+    CommonModule, HttpClientModule, RouterModule, ReactiveFormsModule, UiModule
   ]
 })
 export class CustomersModule { }
