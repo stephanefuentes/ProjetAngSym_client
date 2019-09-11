@@ -1,33 +1,34 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
-import { Customer } from './customer';
+import { Customer } from "./customer";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class CustomersService {
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
-  constructor(private http: HttpClient) { }
+  private getHeaders()
+  {
+    return {
+      headers: {
+        Authorization: "Bearer " + this.auth.getToken()
+      }
+    }
 
+  }
 
-public findAll()
-{
-  return this.http.get("http://localhost:8000/customers").pipe(
-    map(data => {
-
-      const customers = data["hydra:member"] as Customer[];
-
-      return customers;
-    })
-
-  );
-}
+  public findAll() {
+    return this.http
+      .get("http://localhost:8000/customers")
+      .pipe(map(data => data["hydra:member"] as Customer[]));
+  }
 
   public find(id: number) {
     return this.http.get<Customer>("http://localhost:8000/customers/" + id);
   }
-
 
   public create(customer: Customer) {
     return this.http.post<Customer>(
@@ -49,6 +50,4 @@ public findAll()
       updatedCustomer
     );
   }
-
-
 }

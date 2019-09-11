@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nabvar',
@@ -21,10 +23,10 @@ import { Component, OnInit } from '@angular/core';
     </ul>
 
        <ul class="navbar-nav">
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!isAuthenticated">
             <a routerLink="/register" class="btn btn-primary">Inscription</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!isAuthenticated">
             <a routerLink="/login" class="btn btn-success">Connexion</a>
           </li>
           <li class="nav-item">
@@ -34,11 +36,11 @@ import { Component, OnInit } from '@angular/core';
                 alt="Avatar de Lior"
                 class="avatar"
               />
-              Lior Chamla 
+              Steph
             </a>
           </li>
-          <li class="nav-item">
-            <button class="btn btn-danger">Déconnexion</button>
+          <li class="nav-item" *ngIf="isAuthenticated">
+            <button class="btn btn-danger" (click)="handleLogout()">Déconnexion</button>
           </li>
         </ul>  
     
@@ -59,9 +61,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NabvarComponent implements OnInit {
 
-  constructor() { }
+  isAuthenticated= false;
+
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
+    this.isAuthenticated = this.auth.isAuthenticated();
+
+    this.auth.authState.subscribe( state => {
+      this.isAuthenticated = state;
+
+    })
+  }
+
+
+  handleLogout() {
+    this.auth.logout();
+    this.isAuthenticated = false;
+    this.router.navigateByUrl('/login');
   }
 
 }
