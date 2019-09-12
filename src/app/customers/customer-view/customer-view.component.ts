@@ -84,12 +84,17 @@ export class CustomerViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap
-      .pipe(
-        map(params => +params.get("id")),
-        switchMap(id => this.service.find(id))
-      )
-      .subscribe(httpCustomer => (this.customer = httpCustomer));
+
+    // Sans le resolver
+      // this.route.paramMap
+      //   .pipe(
+      //     map(params => +params.get("id")),
+      //     switchMap(id => this.service.find(id))
+      //   )
+      //   .subscribe(httpCustomer => (this.customer = httpCustomer));
+
+    //  Avec le resolver
+    this.customer = this.route.snapshot.data.apiCustomer;
   }
 
   getStatusLabel(status: string) {

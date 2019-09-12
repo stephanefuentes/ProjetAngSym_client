@@ -29,14 +29,14 @@ import { Router } from '@angular/router';
           <li class="nav-item" *ngIf="!isAuthenticated">
             <a routerLink="/login" class="btn btn-success">Connexion</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="isAuthenticated">
             <a routerLink="/profile" class="nav-link">
               <img
-                src="http://robohash.org/lior"
-                alt="Avatar de Lior"
+                [src]="userData.avatar"
+                alt="Avatar {{ userData.username }}"
                 class="avatar"
               />
-              Steph
+              {{ userData.username }}
             </a>
           </li>
           <li class="nav-item" *ngIf="isAuthenticated">
@@ -50,8 +50,8 @@ import { Router } from '@angular/router';
   styles: [
     `
       img.avatar {
-        max-height: 24px;
-        max-width: 24px;
+        max-height: 27px;
+        max-width: 27px;
         border-radius: 50%;
         margin-right: 10px;
         border: 1px solid grey;
@@ -63,13 +63,26 @@ export class NabvarComponent implements OnInit {
 
   isAuthenticated= false;
 
+  userData: any;
+
   constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.isAuthenticated = this.auth.isAuthenticated();
 
+    if(this.isAuthenticated)
+    {
+      this.userData = this.auth.getUserData();
+      console.log(this.userData);
+    }
+
     this.auth.authState.subscribe( state => {
       this.isAuthenticated = state;
+
+      if (this.isAuthenticated) {
+        this.userData = this.auth.getUserData();
+        console.log(this.userData);
+      }
 
     })
   }

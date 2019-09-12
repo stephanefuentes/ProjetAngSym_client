@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { UiService } from 'src/app/ui/ui.service';
 
 @Component({
   selector: "app-login",
@@ -20,10 +21,12 @@ import { Router } from '@angular/router';
           type="email"
           formControlName="username"
           class="form-control"
+          
           [class.is-invalid]="
             form.get('username').invalid && form.get('username').touched
           "
           placeholder="Adresse email"
+          value="user0@sym.com"
         />
         <div class="invalid-feedback" *ngIf="form.get('username').invalid">
           <span *ngIf="form.get('username').hasError('required')">
@@ -39,10 +42,12 @@ import { Router } from '@angular/router';
           type="password"
           formControlName="password"
           class="form-control"
+         
           [class.is-invalid]="
             form.get('password').invalid && form.get('password').touched
           "
           placeholder="Mot de passe"
+           value="password"
         />
         <div class="invalid-feedback" *ngIf="form.get('password').invalid">
           Le mot de passe est obligatoire
@@ -66,24 +71,35 @@ export class LoginComponent implements OnInit {
   errorMessage: string;
 
   form = new FormGroup({
-    username: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", Validators.required)
+    username: new FormControl("user0@sym.com", [Validators.required, Validators.email]),
+    password: new FormControl("password", Validators.required)
   });
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService,
+              private router: Router,
+              private ui: UiService) { }
+
 
   ngOnInit() { }
+
 
   handleSubmit() {
     if (this.form.invalid) return;
 
+    //  active l'écran de chargement
+    this.ui.activateLodading();
+
     this.auth.authenticate(this.form.value).subscribe(
       resultat => {
-        console.log(resultat);
+        //  désactive l'ecran de chargement
+        this.ui.deactivatedLoading();
+
         this.errorMessage = "";
         this.router.navigateByUrl("/");
       },
       error => {
+        //  désactive l'ecran de chargement
+        this.ui.deactivatedLoading();
         if (error.status === 401) {
           this.errorMessage =
             "Nous n'avons pas trouvé de compte utilisateur qui corresponde avec cet email et ce mot de passe";

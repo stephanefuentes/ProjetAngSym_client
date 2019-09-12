@@ -4,6 +4,10 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { Subject } from 'rxjs';
 
+// jwt-decode importer du site npm.js, accolades non nécessaire car un seul export
+import jwtDecode from "jwt-decode";
+
+
 interface AuthResponse {
   token: string;
 }
@@ -47,5 +51,15 @@ export class AuthService {
   {
     return this.getToken() !== null;
   }
+
+
+  getUserData()
+  {
+    if(!this.getToken()) return null;
+
+    return jwtDecode(this.getToken());
+  }
+
+
 
 }

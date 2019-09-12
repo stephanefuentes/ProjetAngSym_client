@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../customer';
 import { CustomersService } from '../customers.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -41,10 +42,14 @@ export class CustomersComponent implements OnInit {
   customers: Customer[] = [];
 
   
-  constructor(private service: CustomersService) { }
+  constructor(private service: CustomersService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.service.findAll().subscribe(customersObs => this.customers = customersObs);
+    // sans le Resolver
+        //this.service.findAll().subscribe(customersObs => this.customers = customersObs);
+
+        //  Avec le reolver
+        this.customers = this.route.snapshot.data.apiCustomers;
 
   }
 
