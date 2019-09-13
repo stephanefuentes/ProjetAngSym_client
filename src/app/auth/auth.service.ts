@@ -22,6 +22,13 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  
+  register(account: {email: string, password: string, avatar: string})
+  {
+    return this.http.post('http://localhost:8000/users', account);
+  }
+
+
   authenticate(credentials: Credentials) {
     return this.http
       .post("http://localhost:8000/login_check", credentials)

@@ -11,6 +11,7 @@ import { Error404Component } from './error404/error404.component';
 import { CommonModule } from '@angular/common';
 import { CustomersResolver } from './customers/customers.resolver';
 import { CustomerResolver } from './customers/customer.resolver';
+import { RegisterComponent } from './auth/register/register.component';
 
 
 
@@ -24,6 +25,8 @@ const routes: Routes = [
   { path: "", redirectTo: "/customers", pathMatch: "full" },
 
   { path: "login", component: LoginComponent },
+  { path: "register", component: RegisterComponent },
+
   { path: "**", component: Error404Component }
 
 

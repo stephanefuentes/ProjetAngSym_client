@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
    <h2 style="color:green;">Liste des customers </h2> 
   </div>
 
-  <a routerLink="/customer/new" class="btn btn-success"> Nouveau Customer</a>
+  <a routerLink="/customers/new" class="btn btn-success"> Nouveau Customer</a>
     <table class="table table-hover">
     <thead>
       <th>id</th>
